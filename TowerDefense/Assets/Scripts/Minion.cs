@@ -7,6 +7,9 @@ public class Minion : MonoBehaviour
 	public float health = 0.0f;
     public bool isAtHouse = false;
 
+	public GameObject projectile = null;
+
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -16,6 +19,7 @@ public class Minion : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
+
         if (isAtHouse != true)
         {
             MoveToHouse();
@@ -42,6 +46,13 @@ public class Minion : MonoBehaviour
             Destroy(gameObject);
 
         }
+
+		if(other.gameObject.tag == "Projectile")
+		{
+			health -= projectile.GetComponent<Projectile>().damage;
+			
+		}
+
         
     }
 }
