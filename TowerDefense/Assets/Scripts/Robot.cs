@@ -50,15 +50,15 @@ public class Robot : MonoBehaviour
 			Instantiate (projectile, transform.position, transform.rotation);
 		}
 
-		if(Input.GetKeyDown (KeyCode.LeftArrow))
+		if(Input.GetKey (KeyCode.LeftArrow))
 		{
 
-			transform.Rotate(Vector3.left * rotationSpeed * Time.deltaTime);
+			transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
 		}
 		
-		if(Input.GetKeyDown (KeyCode.RightArrow))
+		if(Input.GetKey (KeyCode.RightArrow))
 		{
-			transform.Rotate(Vector3.right * rotationSpeed * Time.deltaTime);
+			transform.Rotate(Vector3.down * rotationSpeed * Time.deltaTime);
 
 		}
 

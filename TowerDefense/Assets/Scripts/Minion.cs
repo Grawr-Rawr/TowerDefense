@@ -25,10 +25,7 @@ public class Minion : MonoBehaviour
             MoveToHouse();
         }
 
-		if (health <= 0.0f) 
-		{
-            Destroy(gameObject);
-		}
+		
 	
 	}
 
@@ -47,12 +44,18 @@ public class Minion : MonoBehaviour
 
         }
 
-		if(other.gameObject.tag == "Projectile")
-		{
-			health -= projectile.GetComponent<Projectile>().damage;
-			
-		}
+		
 
         
+    }
+
+    public void TakeDamage (float amount)
+    {
+        health -= amount;
+
+        if (health <= 0.0f)
+        {
+            Destroy(gameObject);
+        }
     }
 }
