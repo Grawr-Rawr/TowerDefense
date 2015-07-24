@@ -8,6 +8,7 @@ public class Minion : MonoBehaviour
     public bool isAtHouse = false;
 
 	public GameObject projectile = null;
+    public GameObject item = null;
 
 
 	// Use this for initialization
@@ -55,6 +56,7 @@ public class Minion : MonoBehaviour
 
         if (health <= 0.0f)
         {
+            Instantiate(item, transform.position, transform.rotation);
             Destroy(gameObject);
         }
     }

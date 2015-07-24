@@ -12,12 +12,13 @@ public class Robot : MonoBehaviour
 
 	public GameObject minion = null;
 	public GameObject projectile = null;
-
+    public GameObject item = null;
+    public GameObject[] items = null;
 
 	// Use this for initialization
 	void Start () 
 	{
-	
+       
 	}
 	
 	// Update is called once per frame
@@ -28,6 +29,7 @@ public class Robot : MonoBehaviour
 
 		Attack ();
 		Die ();
+        CollectItem();
 	}
 
 	public void Die()
@@ -64,4 +66,17 @@ public class Robot : MonoBehaviour
 
 
 	}
+
+    public void CollectItem()
+    {
+         item = GameObject.FindWithTag("Item");
+         //items  
+        
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            print("You have collected an item!");
+            Destroy(item);
+        }
+
+    }
 }

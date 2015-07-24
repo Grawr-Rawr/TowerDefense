@@ -31,8 +31,7 @@ public class Projectile : MonoBehaviour
     IEnumerator HariKari ()
     {
         yield return new WaitForSeconds(timer);
-        print("agljkhdashjkgf");
-        yield return new WaitForSeconds(timer);
+        
         Destroy(gameObject);
     }
 }
