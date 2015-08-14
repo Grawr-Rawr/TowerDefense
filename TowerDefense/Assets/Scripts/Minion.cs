@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Minion : MonoBehaviour 
 {
@@ -10,11 +11,12 @@ public class Minion : MonoBehaviour
 	public GameObject projectile = null;
     public GameObject item = null;
 
+    public Slider healthBar;
 
 	// Use this for initialization
 	void Start () 
 	{
-	
+	    
 	}
 	
 	// Update is called once per frame
@@ -53,6 +55,9 @@ public class Minion : MonoBehaviour
     public void TakeDamage (float amount)
     {
         health -= amount;
+        healthBar.value = (health / 100.0f);
+            //add maxHealth variable later
+
 
         if (health <= 0.0f)
         {

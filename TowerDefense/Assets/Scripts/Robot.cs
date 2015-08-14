@@ -8,6 +8,8 @@ public class Robot : MonoBehaviour
 	public float distance = 0.0f;
 	public float rotationSpeed = 3.0f;
 
+    bool isFiring = false;
+
 	public Material material;
 
 	public GameObject minion = null;
@@ -27,10 +29,49 @@ public class Robot : MonoBehaviour
 		//distance = Vector3.Distance (transform.position, );
 
 
-		Attack ();
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Attack();
+        }
+        Turn();
 		Die ();
-        CollectItem();
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            CollectItem();
+        }
 	}
+
+    private void Turn()
+    {
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+
+            transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
+        }
+
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            transform.Rotate(Vector3.down * rotationSpeed * Time.deltaTime);
+
+        }
+    }
+
+    public void DetermineAutoAttack(bool isFiring)
+    {
+        if (isFiring)
+        {
+            if (!this.isFiring)
+            {
+                StartCoroutine("AutoAttack");
+                this.isFiring = true;
+            }
+        }
+        else
+        {
+            StopCoroutine("AutoAttack");
+            this.isFiring = false;
+        }
+    }
 
 	public void Die()
 	{
@@ -41,30 +82,17 @@ public class Robot : MonoBehaviour
 		
 	}
 
-	public void Attack()
+	protected void Attack()
 	{
 		minion  = GameObject.FindGameObjectWithTag("Minion");
 
 		//transform.LookAt(minion.transform);
 
-		if(Input.GetKeyDown (KeyCode.Space))
-		{
-			Instantiate (projectile, transform.position, transform.rotation);
-		}
-
-		if(Input.GetKey (KeyCode.LeftArrow))
-		{
-
-			transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
-		}
 		
-		if(Input.GetKey (KeyCode.RightArrow))
-		{
-			transform.Rotate(Vector3.down * rotationSpeed * Time.deltaTime);
+	    Instantiate (projectile, transform.position, transform.rotation);
+		
 
-		}
-
-
+		
 	}
 
     public void CollectItem()
@@ -72,11 +100,19 @@ public class Robot : MonoBehaviour
          item = GameObject.FindWithTag("Item");
          //items  
         
-        if (Input.GetKeyDown(KeyCode.C))
-        {
+        
             print("You have collected an item!");
             Destroy(item);
-        }
+        
 
+    }
+
+    IEnumerator AutoAttack()
+    {
+        Attack();
+
+        yield return new WaitForSeconds(.5f);
+
+        StartCoroutine("AutoAttack");
     }
 }
