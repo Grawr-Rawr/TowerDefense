@@ -35,7 +35,7 @@ public class Minion : MonoBehaviour
 
     public void MoveToHouse()
     {
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        //transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
 
     public void OnCollisionEnter(Collision other)
