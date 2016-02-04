@@ -6,6 +6,7 @@ public class Towers : MonoBehaviour
     public float towerHealthMax, towerHealthCurrent;
     public float towerCost;
     public float damageToTake;
+    public float placementBuffer;
 
 	// Use this for initialization
 	void Start ()
