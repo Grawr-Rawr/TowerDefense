@@ -44,7 +44,7 @@ public class TowerPlacer : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.T) && !robotMovingTime)
         {
             towerPlacingTime = !towerPlacingTime;
             //Clears Ghost towers when not in tower placeing mode
