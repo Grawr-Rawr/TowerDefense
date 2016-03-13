@@ -6,6 +6,8 @@ public class Robot : MonoBehaviour
     public float moveSpeed, teleSpeed;
     public float yAdjust, xAdjust;
 
+	/* Robot Movement Needs to go Left to Right, then hit a collider and tranport to the left side of the next floor */
+
     // Use this for initialization
     void Start ()
     {
