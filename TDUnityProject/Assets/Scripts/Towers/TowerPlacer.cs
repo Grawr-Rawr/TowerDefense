@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Collections;
+using UnityEngine.UI; 
 
 public class TowerPlacer : MonoBehaviour
 {
@@ -16,12 +18,15 @@ public class TowerPlacer : MonoBehaviour
     GameObject towerGhost, previwTowerLocation, previewTower;
     int lastXpos;
     bool drawNewGhost;
-   
+
+    public Text hudTowerPlaced = null; 
+    public int towerPlaced = 0; //Temp counter for current towers placed
+
     //Debug stuff
     public bool viewDebugPositions;
     public GameObject debugException, debugBound, debugWarp;
     public List<GameObject> debugObjects;
-
+    
     public static TowerPlacer Instance { get; private set; }
 
     void Awake()
@@ -47,7 +52,7 @@ public class TowerPlacer : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.T) && !robotMovingTime)
         {
             towerPlacingTime = !towerPlacingTime;
-            //Clears Ghost towers when not in tower placeing mode
+            //Clears Ghost towers when not in tower placing mode
             if (towerGhost != null)
             {
                 Destroy(towerGhost);
@@ -67,15 +72,15 @@ public class TowerPlacer : MonoBehaviour
         if (towerPlacingTime)
         {
             drawNewGhost = false;
-            //Create tower prieview       
+            //Create tower preview       
             if (previewTower == null)
             {
                 previewTower = towersToPlace[towerplacementindex];
                 previewTower = Instantiate(previewTower, previwTowerLocation.transform.position, transform.rotation) as GameObject;
                 previewTower.transform.localScale *= 0.5f;
             }
-            //Change Towers with scroll wheel
-            if (Input.GetAxis("Mouse ScrollWheel") > 0f)
+            //Change Towers with scroll wheel - or keystroke (Helps with laptops without mouse)
+            if (Input.GetAxis("Mouse ScrollWheel") > 0f || Input.GetKeyDown(KeyCode.UpArrow) )
             {
                 towerplacementindex++;
                 if (towerplacementindex > towersToPlace.Length - 1)
@@ -86,7 +91,7 @@ public class TowerPlacer : MonoBehaviour
                 drawNewGhost = true;
                 Destroy(previewTower);
             }
-            else if (Input.GetAxis("Mouse ScrollWheel") < 0f)
+            else if (Input.GetAxis("Mouse ScrollWheel") < 0f || Input.GetKeyDown(KeyCode.DownArrow))
             {
                 towerplacementindex--;
                 if (towerplacementindex < 0)
@@ -214,6 +219,11 @@ public class TowerPlacer : MonoBehaviour
                 else if (Input.GetMouseButtonDown(1))
                 {
                     Destroy(mousePosition.collider.gameObject);
+                    if (towerPlaced > 0)
+                    {
+                        towerPlaced--; //Temp counter
+                        hudTowerPlaced.text = towerPlaced.ToString();
+                    }
                 }
                 //kills ghost marker after hovering over a built tower
                 else if (towerGhost != null)
@@ -228,18 +238,23 @@ public class TowerPlacer : MonoBehaviour
 
     public void PlaceTower(Vector3 modifiedPlacement, int houseLevel)
     {
-        Vector3 modifiedForTower = new Vector3(modifiedPlacement.x, modifiedPlacement.y + towerYSnapModifier, modifiedPlacement.z);
-        GameObject tempTowerHolder;
-        tempTowerHolder = Instantiate(towersToPlace[towerplacementindex], modifiedForTower, transform.rotation) as GameObject;
-        if (houseLevels[houseLevel].levelDirection == -1)
+        if (towerPlaced < 4) // temp solution for tower cap
         {
-            tempTowerHolder.transform.Rotate(0, 180, 0);
-        }
-        //Kills ghost marker when tower is placed
-        if (towerGhost != null)
-        {
-            Destroy(towerGhost);
-            //print("Ghostbusters3");
+            Vector3 modifiedForTower = new Vector3(modifiedPlacement.x, modifiedPlacement.y + towerYSnapModifier, modifiedPlacement.z);
+            GameObject tempTowerHolder;
+            tempTowerHolder = Instantiate(towersToPlace[towerplacementindex], modifiedForTower, transform.rotation) as GameObject;
+            towerPlaced++;
+            hudTowerPlaced.text = towerPlaced.ToString(); 
+            if (houseLevels[houseLevel].levelDirection == -1)
+            {
+                tempTowerHolder.transform.Rotate(0, 180, 0);
+            }
+            //Kills ghost marker when tower is placed
+            if (towerGhost != null)
+            {
+                Destroy(towerGhost);
+                //print("Ghostbusters3");
+            }
         }
     }
 

@@ -75,6 +75,7 @@ public class Robot : MonoBehaviour
                 yield return StartCoroutine(MoveFloor(floorChangeDestination, 1));
             }
         }
+        
         TowerPlacer.Instance.PlaceTower(destination, floor);
         yield return null;
     }
